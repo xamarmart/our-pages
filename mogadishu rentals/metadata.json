@@ -1,0 +1,8 @@
+{
+  "name": "Mogadishu Rentals",
+  "description": "A mobile-first real estate rentals experience for discovering, saving, and listing apartments, houses, rooms, hotels, and commercial spaces in Mogadishu.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}

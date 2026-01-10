@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+body { font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif; }
+.safe-pb { padding-bottom: env(safe-area-inset-bottom); }

@@ -1,0 +1,60 @@
+*** Begin Patch
+*** Update File: App.tsx
+@@
+-const mapListingToProduct = (row: ListingWithPhotos): Product => {
+-  const photo = row.listing_photos?.find((p) => p.is_primary) ?? row.listing_photos?.[0];
+-  const addressParts = [row.address, row.city, row.state].filter(Boolean).join(', ');
+-  return {
+-    id: row.id,
+-    title: row.title,
+-    price: Number(row.price),
+-    location: addressParts,
+-    address: row.address,
+-    city: row.city,
+-    state: row.state ?? undefined,
+-    image: photo?.photo_url ?? `https://picsum.photos/seed/${row.id}/400/300`,
+-    photos: (row.listing_photos ?? []).map((p) => p.photo_url ?? (photo?.photo_url ?? `https://picsum.photos/seed/${row.id}/400/300`)),
+-    category: row.property_type ?? 'Apartments',
+-    verified: true,
+-    description: row.description ?? undefined,
+-    saved: false,
+-    condition: 'New',
+-    createdAt: row.created_at ?? undefined,
+-    bedrooms: row.bedrooms ?? undefined,
+-    bathrooms: row.bathrooms ?? undefined,
+-    areaSqft: row.area_sqft ?? undefined,
+-    isVisible: row.is_visible ?? undefined,
+-  };
+-};
++const mapListingToProduct = (row: ListingWithPhotos): Product => {
++  const photos = (row.listing_photos ?? [])
++    .filter((p): p is { photo_url: string; is_primary: boolean | null } => !!p.photo_url)
++    .sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0))
++    .map((p) => p.photo_url);
++
++  const primary = photos[0];
++  const addressParts = [row.address, row.city, row.state].filter(Boolean).join(', ');
++
++  return {
++    id: row.id,
++    title: row.title,
++    price: Number(row.price),
++    location: addressParts,
++    address: row.address,
++    city: row.city,
++    state: row.state ?? undefined,
++    image: primary ?? `https://picsum.photos/seed/${row.id}/400/300`,
++    photos: photos.length ? photos : undefined,
++    category: row.property_type ?? 'Apartments',
++    verified: true,
++    description: row.description ?? undefined,
++    saved: false,
++    condition: 'New',
++    createdAt: row.created_at ?? undefined,
++    bedrooms: row.bedrooms ?? undefined,
++    bathrooms: row.bathrooms ?? undefined,
++    areaSqft: row.area_sqft ?? undefined,
++    isVisible: row.is_visible ?? undefined,
++  };
++};
+*** End Patch
